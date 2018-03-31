@@ -1,0 +1,52 @@
+/*
+ * -----------------------------------------------------------------------------
+ * LICENCE: GNU LESSER GENERAL PUBLIC LICENSE version 3 (ou posterior)
+ * -----------------------------------------------------------------------------
+ * @package   Grafittano
+ * @author    Jean Carlo de Elias Moreira | http://www.jeancarloem.com
+ * @copyright (c) 2014 Jean Carlo de Elias Moreira | http://www.jeancarloem.com
+ * @license   http://www.gnu.org/licenses/lgpl.html
+ * @link      http://opensource.jeancarloem.com/Grafittano, https://github.com/JeanCarloEM/Grafittano
+ */
+
+$font                       : "Noto Sans", "sans-serif", "arial", "tahoma";
+$AlturaLinhaAMais           : .5;
+$barraEsquerdaFechada       : 56px;
+$barraEsquerdaAberta        : 185px;
+$MaxAbertoAberta            : $barraEsquerdaAberta;
+$barraEspandidaMin          : 1280px;
+$HeaderBar                  : 42px;
+$MestreHeaderHeight         : 60px;
+$content-heading-font-size  : 1.8em;
+$heading-line-height        : 1.3;
+
+$font-size                  : .945em;
+
+$footerH                    : 3em;
+
+$HerderMid                  : 3.5em;
+$HerderMestre               : 3.5em;
+$HeaderPrincipal            : 6.7em;
+$HeaderPrincipalMin         : 3.5em;
+
+$PrincipalIcon              : $HeaderPrincipal*1.1;
+
+$recursos_url               : 'recursos/' !default;
+$img_url                    : 'assets/img' !default;
+$font_url                   : 'assets/font' !default;
+
+$w                          : 297mm;
+$h                          : 210mm;
+
+$margins                    : 3.5mm;
+
+$marginW                    : 5mm;
+$marginH                    : 5mm;
+
+$mw                         : $margins + $marginW;
+$mh                         : $margins + $marginH;
+
+$cw                         : $w/3;
+
+$ph                         : $h - 2*(2.5*$margins + $marginH);
+$pw                         : $cw - 2*$margins;

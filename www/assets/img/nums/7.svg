@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="50.0" height="100.0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path fill="#00f0ff" transform="scale(.1,-.1) translate (0, -800)" glyph-name="seven" unicode="7" horiz-adv-x="313" 
+d="M298 549c-91 -349 -99 -389 -133 -593c-9 -10 -40 -18 -92 -24v4c-5 -1 -9 -2 -15 -2c17 156 77 350 181 583c-65 5 -129 22 -194 50c-3 5 -4 6 -5 35c0 26 6 44 16 56l9 -2c3 6 6 12 11 17c75 -15 147 -42 217 -81c6 -10 9 -20 9 -29v-28zM287 564c-1 6 -2 12 -5 17
+c-65 37 -132 62 -200 75c-1 -1 -2 -1 -2 -3c63 -15 124 -39 185 -73c5 -8 7 -16 7 -24c-1 -2 -4 -9 -8 -25l9 -1c-8 -17 -16 -34 -23 -51c-50 -190 -77 -306 -114 -522c7 2 12 4 15 6c42 253 82 419 136 601z" />
+</svg>

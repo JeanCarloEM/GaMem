@@ -1,0 +1,42 @@
+@function to_cmyk($c, $m, $y, $k) {
+  $c: $c / 100;
+  $m: $m / 100;
+  $y: $y / 100;    
+  
+  @if $k == 0 {
+    $k: 0.001;    
+  } @else {
+    $k: $k / 100;  
+  }    
+  
+  @if $k >= 1 {    
+    $k: 0.999;
+  }
+  
+  $k: 1 - $k; 
+
+  $r: 255 * (1 - $c) * $k;
+  $g: 255 * (1 - $m) * $k;
+  $b: 255 * (1 - $y) * $k;
+
+  @return rgb($r, $g, $b);
+}
+
+// O EQUIVALENTE A BRANCO
+$branco   : to_cmyk(0, 0, 0, 0);
+
+$red      : red;
+$amarelo  : to_cmyk(0, 0, 100, 0);
+
+// OUTRAS CORES UTILIZADAS
+$cor0     : #2b92db;
+
+$preto    : ();
+
+/* C  M  Y  K */             
+@for $g from 0 through 20 {   
+  $preto: append($preto, to_cmyk(0, 0, 0, $g*5));
+}
+
+// COR PADRÃO DO TEXTO
+$textcor  : nth($preto, 16);
