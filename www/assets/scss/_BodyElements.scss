@@ -5,6 +5,8 @@
   color: $textcor;
   line-height: 1.2em;
   text-align: justify;
+  
+  @include transition(.2s, 0s);
 }
 
 @for $i from 1 through 7 {

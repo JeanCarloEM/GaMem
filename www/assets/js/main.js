@@ -38,13 +38,13 @@ if (typeof (window.isNodeList) === "undefined" || !window.isNodeList) {
             /^\[object (HTMLCollection|NodeList|Object)\]$/.test(stringRepr) &&
             (typeof nodes.length === 'number') &&
             (nodes.length === 0 || (typeof nodes[0] === "object" && nodes[0].nodeType > 0));
-  }
+  };
 }
 
 if (typeof (window.isList) === "undefined" || !window.isList) {
   window.isList = function (nodes) {
     return (Array.isArray(nodes) || window.isNodeList(nodes));
-  }
+  };
 }
 
 /* OBTEM O ID E SETA O MEMSO CASO INEXISTA */
@@ -115,6 +115,7 @@ if (typeof (seletor) === "undefined" || !seletor) {
 
   w.css = function (ele, at, val) {
     if ((typeof at === "string") && (typeof val === "string") && at && val) {
+
       ele = w.isList(ele) ? ele : [$(ele)];
 
       for (var i = 0; i < ele.length; i++) {
@@ -130,10 +131,17 @@ if (typeof (seletor) === "undefined" || !seletor) {
     return true;
   };
 
+  HTMLElement.prototype.stop = function () {
+    if (this.tagName.toLowerCase() === "audio") {
+      this.pause();
+      this.currentTime = 0;
+    }
+  }
+
   HTMLElement.prototype.css = function (at, vl) {
     if (!vl) {
       var rx = new RegExp("([\s]*" + at + ":[^;]*;[\s]*)", "i");
-      return (this.attr('style')) ? this.attr('style').match(rx, at + ":" + val + ";") : '';
+      return (this.attr('style')) ? this.attr('style').match(rx, at + ":" + vl + ";") : '';
     } else {
       return w.css(this, at, vl);
     }
@@ -265,13 +273,14 @@ if (typeof (seletor) === "undefined" || !seletor) {
   };
 
   w.contador = function (id, cont) {
+    var x = cont;
     cont = "000".substring(0, 3 - (cont + "").length) + cont;
 
     for (var i = (cont.length - 1); i >= 0; i--) {
       var index = cont.length - i;
       $("#" + id + " .num.d" + index + " > img").attr("src", "assets/img/nums/" + cont[i] + ".svg");
     }
-  }
+  };
 
   w.loader = function (show) {
     show = w.iniBool(show);
@@ -285,9 +294,68 @@ if (typeof (seletor) === "undefined" || !seletor) {
     }
   };
 
-  w.bkCounter = function () {
-    $("body > section").attr("style", "background: url('" + $("#bkPreloader").attr('src') + "');");
-    w.setTimeout("window.loader(false);", 1000);
+
+  w.assetLoader = function () {
+    var totalAssets = $("audio", true).length + $("img", true).length;
+    w.assetsCount = ((w.assetsCount) ? w.assetsCount : 0) + 1;
+    this.attr("loaded", true);
+
+    if ($(this).hasClass("gameFundo")) {
+      $("body > section.game > div.gameFundo").attr("style", "background: url('" + $("#bkPreloader").attr('src') + "');");
+      this.removeClass();
+    }
+
+    $("body > div.loadbar").css("width", ((w.assetsCount / totalAssets) * 100) + "% !important");
+
+    if (this.hasClass("gameparts")) {
+      this.attr("style", "display: none;");
+    }
+
+    if (w.assetsCount >= totalAssets) {
+      w.setTimeout("window.start();", 1000);
+    }
+  }
+
+  w.start = function () {
+    w.loader(false);
+
+    $('body > header.principal').removeClass('ocultar');
+    $('body > div.loadbar').addClass('ocultar');
+
+    w.resetSom();
+
+    $('body > div.preloads audio.music').play();
+  };
+
+  w.resetSom = function () {
+    w.controlVolUpdate(w.isNum(w.store("som_music")) ? w.store("som_music") : 2, "music");
+    w.controlVolUpdate(w.isNum(w.store("som_fx")) ? w.store("som_fx") : 9, "fx");
+  };
+
+  w.store = function (at, val) {
+    try {
+      if (typeof val === "undefined") {
+        if (Array.isArray(w.localStorage) || ((typeof w.localStorage === "object") && (typeof w.localStorage.getItem !== "function"))) {
+          return w.localStorage[at];
+        }
+
+        return w.localStorage.getItem(at);
+      } else {
+        if (Array.isArray(w.localStorage) || ((typeof w.localStorage === "object") && (typeof w.localStorage.setItem !== "function"))) {
+          w.localStorage[at] = val;
+        } else {
+          w.localStorage.setItem(at, val);
+        }
+      }
+    } catch (err) {
+      w.__DB = Array.isArray(w.__DB) ? w.__DB : [];
+
+      if (typeof val === "undefined") {
+        return w.__DB[at];
+      } else {
+        w.__DB[at] = val;
+      }
+    }
   };
 
   w.bkLoader = function () {
@@ -295,12 +363,35 @@ if (typeof (seletor) === "undefined" || !seletor) {
       $("body").attr("lkStart", 1);
     } else {
       var e = document.createElement("img");
-      e.attr("class", 'ocultar');
+      e.attr("class", 'ocultar gameFundo');
       e.attr("id", 'bkPreloader');
       e.attr("style", 'width: 10px;');
       e.attr("src", "assets/img/bk/" + w.bks[Math.floor(Math.random() * w.bks.length)]);
-      e.addEventListener('load', w.bkCounter, false);
-      $("body").appendChild(e);
+      $("body > section.game").appendChild(e);
+    }
+
+    for (var i = 0; i < $("img").length; i++) {
+      if ($("img")[i].complete) {
+        w.assetLoader.call($("img")[i]);
+      } else {
+        $("img")[i].addEventListener('load', w.assetLoader, false);
+      }
+    }
+
+    for (var i = 0; i < $("audio").length; i++) {
+      if ($("audio")[i].readyState === 4) {
+        w.assetLoader.call($("audio")[i]);
+      } else {
+        $("audio")[i].onloadeddata = w.assetLoader;
+      }
+    }
+
+    for (var i = 0; i < GaMem.prototype.parts.length; i++) {
+      var e = document.createElement("img");
+      e.attr("class", 'gameparts ocultar c' + GaMem.prototype.parts[i].charCodeAt());
+      e.addEventListener('load', w.assetLoader, false);
+      e.attr("src", "assets/img/ico/space/" + GaMem.prototype.parts[i].charCodeAt() + ".svg");
+      $("body > div.preloads").appendChild(e);
     }
   };
 
@@ -328,20 +419,71 @@ if (typeof (seletor) === "undefined" || !seletor) {
     w.game.reset();
   };
 
+  w.controlVolUpdate = function (v, dest) {
+    v = Math.floor(v);
+    dest = (typeof dest !== "string") ? "music" : dest;
+
+    /* GUARDA O VOLUME */
+    w.store("som_" + dest, v);
+
+    if (dest === "music") {
+      /* SETA O VOLUME */
+      $('body > div.preloads audio.music').volume = v > 0 ? (v / 10) : 0;
+    } else {
+      var a = $('body > div.preloads div.fx audio', true);
+
+      for (var g = 0; g < a.length; g++) {
+        a[g].volume = v > 0 ? (v / 10) : 0;
+      }
+
+      if (w.game) {
+        var a = $('#' + $(w.game.t).getId() + ' audio', true);
+
+        for (var g = 0; g < a.length; g++) {
+          a[g].volume = v > 0 ? (v / 10) : 0;
+        }
+      }
+    }
+
+    /* DESATIVA TODOS */
+    w.removeClass($("body > section > aside.volume." + dest + " td > div", true), "ativo");
+
+    /* ATIVA ATEH O LIMITE */
+    for (var g = 0; g <= v; g++) {
+      $("body > section > aside.volume." + dest + " td > div[data-vol='" + g + "']").addClass("ativo");
+    }
+  };
+
   document.addEventListener('DOMContentLoaded', function () {
     w.bkLoader();
     w.setTimeout("window.clock();", 1000);
+
+    for (var i = 0; i < $("body > section > aside.volume td > div", true).length; i++) {
+      $("body > section > aside.volume td > div", true)[i].addEventListener('click', function () {
+        var pai = this;
+
+        while ((!pai.hasClass("volume")) && (pai.tagName.toLowerCase() !== "body")) {
+          pai = pai.parentNode;
+        }
+
+        pai = (pai.tagName.toLowerCase() !== "body") ? (pai.hasClass("music") ? "music" : "fx") : "music";
+        w.controlVolUpdate((this.attr("data-vol") === "0") ? 0 : parseInt(this.attr("data-vol")), pai);
+      }, false);
+    }
 
     var items = $('.menu > .btb');
 
     for (var i = 0; i < items.length; i++) {
       items[i].addEventListener('click', function () {
+
         if (this.hasClass('continuar')) {
+
           w.addClass($(w.game.t), 'ativo');
           w.exibir($(w.game.t), true);
           w.exibir($(w.game.hud), true);
           w.exibir($(w.game.splash), false);
         } else if (this.hasClass('mp')) {
+
           if ((!this.hasClass('p2')) && (!this.hasClass('surv'))) {
             this.addClass('p2');
           } else if (this.hasClass('p2')) {
@@ -351,6 +493,7 @@ if (typeof (seletor) === "undefined" || !seletor) {
             this.removeClass('p2');
             this.removeClass('surv');
           }
+
         } else {
           LOG('> Criando jogo com ' + this.attr('data-q') + ' elementos.');
 
@@ -359,16 +502,12 @@ if (typeof (seletor) === "undefined" || !seletor) {
           if ($('.menu > .btb.mp').hasClass("p2")) {
             mod = 2;
           } else if ($('.menu > .btb.mp').hasClass("surv")) {
-            mod = 0
+            mod = 0;
           }
 
-          window.game = new GaMem(this.attr('data-q'), ".quadro > .tabuleiro", ".quadro > .splash", ".quadro > .hud", ".quadro > .wins", ".quadro > .gameover", ".p1 .contador", ".p2 .contador", mod);
+          window.game = new GaMem(this.attr('data-q'), ".quadro > .tabuleiro", ".quadro > .splash", "section.game > .hud", ".quadro > .wins", ".quadro > .gameover", ".p1 .contador", ".p2 .contador", ".wins .pontos .contador", mod);
         }
       }, false);
-    }
-
-    for (var i = 2; i < 14; i++) {
-      LOG(i + " => " + (i * i) + " |> " + ((i * i) / 2) + " :: " + (((i * i) % 2) === 0 ? "SIM" : ""));
     }
 
     $('.hud .ico.menu').addEventListener('click', function () {
@@ -378,6 +517,11 @@ if (typeof (seletor) === "undefined" || !seletor) {
 
     $('.quadro .gomenu').forEach(function (el) {
       el.addEventListener('click', function () {
+        $('body > div.preloads audio.music').play();
+
+        $('body > div.preloads audio.gameover').stop();
+        $('body > div.preloads audio.vitoria').stop();
+
         w.removeClass($(w.game.t), 'ativo');
         w.game.reset();
         w.showSplash();
@@ -385,14 +529,24 @@ if (typeof (seletor) === "undefined" || !seletor) {
     });
 
   }, false);
-}(window, seletor, console.log, console.warn, console.error));
+}(window, seletor,
+        function (msg) {
+          return console.log(msg);
+        },
+        function (msg) {
+          return console.warn(msg);
+        },
+        function (msg) {
+          return console.error(msg);
+        }
+));
 
 /*
  * A CLASSE DO JOGO
  */
 if (typeof (GaMem) === "undefined" || !GaMem) {
-  function GaMem(qtd, tabuleiro, splash, hud, wins, gameover, c1, c2, mod) {
-    this.constructor(qtd, tabuleiro, splash, hud, wins, gameover, c1, c2, mod);
+  function GaMem(qtd, tabuleiro, splash, hud, wins, gameover, c1, c2, wc, mod) {
+    this.constructor(qtd, tabuleiro, splash, hud, wins, gameover, c1, c2, wc, mod);
   }
 
   /*
@@ -406,8 +560,7 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
    * @param function ERROR  function console.error
    */
   (function (w, $, GM, LOG, WARN, ERROR) {
-    GM.parts = "abcdefghijklmnopqruvxywz" +
-            'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
+    GM.parts = ("abcdefghijklmnopqruvxywz" + 'ABCDEFGHIJKLMNOPQRSTUVXYWZ').split("");
 
     GM.qtd = 8;
     GM.t = null;
@@ -474,10 +627,17 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
 
     GM.showGameOver = function () {
       GM.tela(2);
+
+      $('body > div.preloads > audio.music').stop();
+
+      $("body > div.preloads > div.fx > audio.gameover").play();
     };
 
     GM.showWins = function (player) {
       GM.tela(3);
+
+      $('body > div.preloads > audio.music').stop();
+      $("body > div.preloads > div.fx > audio.vitoria").play();
     };
 
     GM.reset = function () {
@@ -485,6 +645,7 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
       $('body').attr('surv', null);
       $('body').attr('startcron', null);
       $('body').attr('wins', null);
+      $('body').attr('multi', null);
 
       $('body').removeClass('jogando');
 
@@ -498,7 +659,7 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
       }
     };
 
-    GM.constructor = function (qtd, tabuleiro, splash, hud, wins, gameover, c1, c2, mod) {
+    GM.constructor = function (qtd, tabuleiro, splash, hud, wins, gameover, c1, c2, wc, mod) {
       if (!((typeof tabuleiro === "string") && (typeof $(tabuleiro) === "object") && $(tabuleiro).tagName)) {
         alert("Erro interno [1].");
         ERROR("[ERRO] GaMem :: O elemento TABULEIRO para construção do jogo NÃO é válido.");
@@ -541,10 +702,16 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
         return;
       }
 
+      if (!((typeof wc === "string") && (typeof $(wc) === "object") && $(wc).tagName)) {
+        alert("Erro interno [3].");
+        ERROR("[ERRO] GaMem :: O elemento CONTADOR Wins do jogo NÃO é válido.");
+        return;
+      }
+
 
       GM.pontos = [0, 0];
 
-      GM.cont = [c1, c2];
+      GM.cont = [c1, c2, wc];
       GM.t = tabuleiro;
       GM.splash = splash;
       GM.hud = hud;
@@ -566,10 +733,15 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
       /* RESETA O JOGO LIMPANDO JOGOS ANTERIORES SE EXISTENTES */
       $(GM.t).innerHTML = '';
 
-      var items = GM.shuffle(GM.parts.split('')).join('').substr(0, ((GM.qtd * GM.qtd) / 2)).split('');
+      var items = GM.shuffle(GM.parts).slice(0, ((GM.qtd * GM.qtd) / 2));
       items = GM.shuffle(GM.shuffle(GM.shuffle(GM.shuffle(items).concat(GM.shuffle(items)))));
 
       var size = (100 / GM.qtd);
+
+      /* ZERANDO OS PONTOS, INCLUSIVE WINS */
+      w.contador($(GM.cont[0]).getId(), 0);
+      w.contador($(GM.cont[1]).getId(), 0);
+      w.contador($(GM.cont[2]).getId(), 0);
 
       for (var i = 0; i < items.length; i++) {
         /* GRIA A CELULA ITEM (ENVOLUCRO DIVISOR DE AREAS) */
@@ -578,8 +750,8 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
         e.attr('class', 'celula c' + items[i].charCodeAt());
         e.attr('char', items[i]);
         e.attr('ascii', items[i].charCodeAt());
-
         e.attr('style', 'width:' + size + '%;height:' + size + '%;');
+        e.innerHTML = $('body > div.preloads > div.fx div.cell').innerHTML;
 
         /* CRIA O ITEM */
         var t = document.createElement("div");
@@ -588,13 +760,24 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
         e.appendChild(t);
 
         /* ADICIONA O TEXTO (CONTEUDO) */
-        var s = document.createElement("SPAN");
+        var s = document.createElement("span");
         s.innerHTML = items[i];
+
         t.appendChild(s);
 
         $(GM.t).appendChild(e);
 
+        e.addEventListener('mouseenter', function () {
+          if ((!this.hasClass("selecionado")) && (!this.hasClass("achado")) && ($(GM.t).hasClass("ativo")) && ($('body').hasClass("jogando")) && ($("#" + $(GM.t).getId() + " .selecionado", true).length < 2)) {
+            w.setTimeout('seletor("#' + this.getId() + ' audio.over").play();', 50);
+          }
+        }, false);
+
         e.addEventListener('click', function () {
+          if ((!this.hasClass("selecionado")) && (!this.hasClass("achado")) && ($(GM.t).hasClass("ativo")) && ($('body').hasClass("jogando")) && ($("#" + $(GM.t).getId() + " .selecionado", true).length < 2)) {
+            w.setTimeout('seletor("#' + this.getId() + ' audio.click").play();', 20);
+          }
+
           if (($('body').hasClass('jogando')) && ($(GM.t).hasClass('ativo')) && (!$(GM.t).hasClass('pausado')) && (!this.hasClass('achado'))) {
             var sels = $("#" + $(GM.t).getId() + " .celula.selecionado", true);
 
@@ -612,6 +795,8 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
               jogador = jogador < 0 ? 0 : jogador;
 
               if (sels[0].attr('ascii') === sels[1].attr('ascii')) {
+                w.setTimeout('seletor("body > div.preloads > div.fx > audio.achado").play();', 20);
+
                 w.addClass($("#" + $(GM.t).getId() + " .celula.selecionado", true), "achado");
 
                 if (jogador === 1) {
@@ -622,20 +807,35 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
 
                 GM.pontos[jogador] += 10;
 
+                /* TERMINOU AS IMAGENS */
                 if ($("#" + $(GM.t).getId() + " .celula:not(.achado)", true).length <= 0) {
-                  var ven = GM.pontos[0] > GM.pontos[1] ? 1 : (GM.pontos[0] > GM.pontos[1] ? 2 : 0);
+                  var ven = (GM.pontos[0] > GM.pontos[1] ? 0 : (GM.pontos[1] > GM.pontos[0] ? 1 : -1)) + 1;
 
-                  /*
-                   * ESTE EH O UNICOQUE JAHSETA LOGO AQUI SEM SER COM TIME, PQ
-                   * SE NAO O CLOCK PODE CONFLITAR E TERMOS DUAS COISAS DISTINTAS
-                   * SENDO EXECUTADAS
-                   */
-                  $('body').attr('surv', null);
+                  /* EMPATE = GAME OVER */
+                  if (ven === 0) {
+                    GM.reset();
+                    GM.showGameOver();
+                  } else {
+                    GM.pontos[jogador] = GM.pontos[jogador] > 0 ? GM.pontos[jogador] : 0;
+                    w.contador($(GM.cont[jogador]).getId(), GM.pontos[jogador]);
 
-                  /* EXIBIMOS A TELA COM TIME DE 1 SEGUNDO */
-                  w.setTimeout("window.reset();seletor('body').attr('wins', " + ven + ");window.showWins(" + GM.pontos[ven - 1] + ");", 1000);
+                    /*
+                     * ESTE EH O UNICOQUE JAH SETA LOGO AQUI SEM SER COM TIME, PQ
+                     * SE NAO O CLOCK PODE CONFLITAR E TERMOS DUAS COISAS DISTINTAS
+                     * SENDO EXECUTADAS
+                     */
+                    $('body').attr('surv', null);
+
+                    /* EXIBE A PONTUAÇÃO VENCEDORA */
+                    w.contador($(GM.cont[2]).getId(), GM.pontos[ven - 1]);
+
+                    /* EXIBIMOS A TELA COM TIME DE 1 SEGUNDO */
+                    w.setTimeout("window.reset();seletor('body').attr('wins', " + ven + ");window.showWins(" + GM.pontos[ven - 1] + ");", 1000);
+                  }
                 }
               } else {
+                w.setTimeout('seletor("body > div.preloads > div.fx > audio.error").play();', 600);
+
                 $(GM.t).addClass('pausado');
                 w.setTimeout('window.removeClass(seletor("#' + $(GM.t).getId() + ' .celula.selecionado", true), "selecionado");', 1000);
                 w.setTimeout("seletor('#" + $(GM.t).getId() + "').removeClass('pausado');", 1100);
@@ -676,7 +876,18 @@ if (typeof (GaMem) === "undefined" || !GaMem) {
       $('body').attr('startCron', Math.round(GM.qtd * GM.qtd * 0.15 + .5));
 
       GM.showTabuleiro();
+      w.setTimeout("window.resetSom();", 500);
     };
 
-  }(window, seletor, GaMem.prototype, console.log, console.warn, console.error));
+  }(window, seletor, GaMem.prototype,
+          function (msg) {
+            return console.log(msg);
+          },
+          function (msg) {
+            return console.warn(msg);
+          },
+          function (msg) {
+            return console.error(msg);
+          }
+  ));
 }
