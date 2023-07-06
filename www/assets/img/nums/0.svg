@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="50.0" height="100.0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<path fill="#00f0ff" transform="scale(.1,-.1) translate (0, -800)" glyph-name="zero" unicode="0" horiz-adv-x="423" 
-d="M217 646c112 -17 191 -219 191 -450c0 -233 -132 -284 -228 -284c-33 0 -60 13 -82 39c-51 33 -77 109 -77 230c0 81 10 170 31 269c29 138 67 207 116 207c17 0 34 -4 49 -11zM230 599v-1l-7 1c-51 0 -99 -204 -99 -399c0 -112 25 -202 62 -228c71 0 121 107 121 255
-c0 122 -39 315 -77 372zM158 -22c-33 43 -49 117 -49 222c0 176 44 403 108 413c-8 7 -16 10 -24 10c-65 0 -106 -241 -106 -407c0 -124 27 -215 71 -238zM138 -63c13 -7 27 -10 42 -10c136 0 213 98 213 269c0 142 -41 352 -132 417c63 -69 110 -240 110 -400
-c0 -185 -77 -276 -233 -276z" />
-</svg>

@@ -1,0 +1,13 @@
+{
+  "android": {
+    "banner": "ca-app-pub-2864905777530426/4300732231",
+    "intersticial": "ca-app-pub-2864905777530426/6380100668",
+    "rewardvideo": "ca-app-pub-2864905777530426/8787127373"
+  },
+  "ios": {
+    "banner": "ca-app-pub-2864905777530426/2762443372",
+    "intersticial": "ca-app-pub-2864905777530426/2570871686",
+    "rewardvideo": "ca-app-pub-2864905777530426/8787127373"
+  },
+  "window": null
+}

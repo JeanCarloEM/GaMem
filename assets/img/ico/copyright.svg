@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="197px"
+   height="197px"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="copyright.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata18">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs16" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview14"
+     showgrid="false"
+     inkscape:zoom="1.1979695"
+     inkscape:cx="98.5"
+     inkscape:cy="98.5"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <g
+     id="g839"
+     style="fill:#999999">
+    <path
+       id="circle2"
+       d="M 98 0 A 98 98 0 0 0 0 98 A 98 98 0 0 0 98 196 A 98 98 0 0 0 196 98 A 98 98 0 0 0 98 0 z M 98 20 A 78 78 0 0 1 176 98 A 78 78 0 0 1 98 176 A 78 78 0 0 1 20 98 A 78 78 0 0 1 98 20 z "
+       style="fill:#999999" />
+    <path
+       id="circle6"
+       d="M 98 43 A 55 55 0 0 0 43 98 A 55 55 0 0 0 98 153 A 55 55 0 0 0 151.63086 110 L 125.47656 110 A 30 30 0 0 1 98 128 A 30 30 0 0 1 68 98 A 30 30 0 0 1 98 68 A 30 30 0 0 1 125.00781 85 L 151.38086 85 A 55 55 0 0 0 98 43 z "
+       style="fill:#999999" />
+  </g>
+</svg>

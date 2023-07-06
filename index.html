@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <!-- START - Open Graph for Facebook, Google+ and Twitter Card Tags 2.2.4.2 -->
+  <!-- Facebook / OG -->
+  <meta property='og:title' content='GaMem - o jogo da memória alienígena' />
+  <meta property='og:url' content='https://gamem.jcem.pro/' />
+  <meta property='og:description'
+    content='Um Jogo da Memória Alienígena opensource. Modalidades: SinglePLayer, Local Multiplayer, SinglePlayer Survivor (sobrevivencia). Constru[ido em puro HTML, CSS, Javascript, sem frameworks, inclusive jQuery.' />
+  <meta property='og:site_name ' content='Jean Carlo EM' />
+  <meta property='og:image' content='https://gamem.jcem.proassets/favicon//banner.png' />
+  <meta property='og:type' content='website' />
+  <!-- Google+ / Schema.org -->
+  <meta itemprop='name' content='GaMem - o jogo da memória alienígena' />
+  <meta itemprop='headline' content='GaMem - o jogo da memória alienígena' />
+  <meta itemprop='url' content='https://gamem.jcem.pro/' />
+  <meta itemprop='description'
+    content='Um Jogo da Memória Alienígena opensource. Modalidades: SinglePLayer, Local Multiplayer, SinglePlayer Survivor (sobrevivencia). Constru[ido em puro HTML, CSS, Javascript, sem frameworks, inclusive jQuery.' />
+  <meta itemprop='image' content='https://gamem.jcem.proassets/favicon//banner.png' />
+  <meta itemprop='og:image:width' content='758' />
+  <meta itemprop='og:image:height' content='427' />
+  <meta itemprop='author' content='' />
+  <!--Twitter CARDs -->
+  <meta name='twitter:title' content='GaMem - o jogo da memória alienígena' />
+  <meta name='twitter:url' content='https://gamem.jcem.pro/' />
+  <meta name='twitter:image' content='https://gamem.jcem.proassets/favicon//banner.png' />
+  <meta name='twitter:description'
+    content='Um Jogo da Memória Alienígena opensource. Modalidades: SinglePLayer, Local Multiplayer, SinglePlayer Survivor (sobrevivencia). Constru[ido em puro HTML, CSS, Javascript, sem frameworks, inclusive jQuery.' />
+  <meta name='twitter:card' content='summary_large_image' />
+  <!-- SEO -->
+  <meta name='description'
+    content='Um Jogo da Memória Alienígena opensource. Modalidades: SinglePLayer, Local Multiplayer, SinglePlayer Survivor (sobrevivencia). Constru[ido em puro HTML, CSS, Javascript, sem frameworks, inclusive jQuery.' />
+  <meta name='publisher' content='Jean Carlo EM' />
+  <meta name="author" content="Jean Carlo EM">
+  <link rel='canonical' href='https://gamem.jcem.pro' />
+  <!--END - Open Graph for Facebook, Google+ and Twitter Card Tags 2.2.4.2 -->
+  <title>GaMem :: Jogo da Memória Alienígena | JCEM</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+  <!-- RICH SNIPPETYS :: START -->
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "GaMem",
+      "operatingSystem": "ALL",
+      "image": "assets/favicon//banner.png",
+      "description": "GaMem é um jogo da memória que utiliza figuras com tema espacial alienígena construído em puro HTML/CSS/Javascript, sem uso de frameworks. Grátis para jogar online.",
+      "applicationCategory": "https://schema.org/GameApplication",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.8,
+        "ratingCount": 12
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "BRL"
+      }
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://gamem.jcem.pro",
+      "image":"assets/favicon//banner.png",
+      "description": "GaMem é um jogo da memória que utiliza figuras com tema espacial alienígena construído em puro HTML/CSS/Javascript, sem uso de frameworks. Grátis para jogar online."
+    }
+  </script>
+
+  <!-- RICH SNIPPETYS :: END -->
+  <!-- START - ICONES -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+  <link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#ff0000">
+  <meta name="msapplication-TileColor" content="#222222">
+  <meta name="theme-color" content="#ffffff">
+  <!-- END - ICONES -->
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <meta name="author" content="Jean Carlo de Elias Moreira">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="game jogo memória opensource">
+  <meta name="description"
+    content="Um Jogo da Memória Alienígena opensource. Modalidades: SinglePLayer, Local Multiplayer, SinglePlayer Survivor (sobrevivencia). Constru[ido em puro HTML, CSS, Javascript, sem frameworks, inclusive jQuery.">
+
+  <style>
+    html,
+    body {
+      background: #333;
+    }
+
+    @-webkit-keyframes keyframes-bolas {
+
+      0%,
+      100% {
+        -webkit-transform: scale(0.0)
+      }
+
+      50% {
+        -webkit-transform: scale(.95)
+      }
+    }
+
+    @keyframes keyframes-bolas {
+
+      0%,
+      100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+      }
+
+      50% {
+        transform: scale(1.0);
+        -webkit-transform: scale(.95);
+      }
+    }
+
+    .loading {
+      width: 7em;
+      height: 7em;
+
+      position: fixed;
+      top: 50%;
+      left: calc(50% - 3.5em);
+      margin-top: -3.5em;
+    }
+
+    .loading>.bola1,
+    .loading>.bola2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      border-radius: 50%;
+      background: rgba(194, 20, 204, .7);
+
+      animation: keyframes-bolas 2.0s infinite ease-in-out;
+      -webkit-animation: keyframes-bolas 2.0s infinite ease-in-out;
+    }
+
+    .loading>.bola2 {
+      -webkit-animation-delay: -1.0s;
+      animation-delay: -1.0s;
+    }
+
+    .exibir,
+    .ocultar {
+      -webkit-transition: all 0.5s linear 0s;
+      -moz-transition: all 0.5s linear 0s;
+      -ms-transition: all 0.5s linear 0s;
+      -o-transition: all 0.5s linear 0s;
+      transition: all 0.5s linear 0s;
+    }
+
+    .exibir {
+      opacity: 100 !important;
+      filter: alpha(opacity=10000) !important;
+    }
+
+    .ocultar {
+      opacity: 0 !important;
+      filter: alpha(opacity=0) !important;
+    }
+
+    body>div.loadbar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: auto;
+      height: .5em;
+      width: 0;
+      background: #2b92db;
+
+      -webkit-transition: all .3s linear 0s;
+      -moz-transition: all .3s linear 0s;
+      -ms-transition: all .3s linear 0s;
+      -o-transition: all .3s linear 0s;
+      transition: all .3s linear 0s;
+    }
+
+    body>div.loadbar.mod {
+      background: yellow;
+    }
+
+    body>div.loadbar.finall {
+      background: orange;
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <script src="assets/js/main.js"></script>
+
+</head>
+
+<body>
+  <div class="ocultar preloads">
+    <audio class="music" loop>
+      <source src="assets/audio/CC0-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS9yYXAyaC9zb3VuZHMvMTUxNTM5Lw==.m4a"
+        type="audio/mp4">
+    </audio>
+    <audio class="ambient" loop>
+      <source src="assets/audio/CC0-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS9sb2xsb3NvdW5kL3NvdW5kcy8zODY5OTcv.m4a"
+        type="audio/mp4">
+    </audio>
+    <audio class="gameover" loop>
+      <source src="assets/audio/fx/CC0-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS9zaXJwbHVzL3NvdW5kcy8yNTAzMQ==.m4a"
+        type="audio/mp4">
+    </audio>
+    <audio class="vitoria" loop>
+      <source
+        src="assets/audio/fx/CCBY3-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS9sdWNreWxpdHRsZXJhdmVuL3NvdW5kcy8yMTgzNDg=.m4a"
+        type="audio/mp4">
+    </audio>
+
+    <div class="fx">
+      <audio class="achado">
+        <source src="assets/audio/fx/CCBY3-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS92aWt1c2Vycm8vc291bmRzLzI0NjMwNy8=.m4a"
+          type="audio/mp4">
+      </audio>
+      <audio class="error">
+        <source src="assets/audio/fx/CC0-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS9sbHVpc2V0Ny9zb3VuZHMvMTQxMzM0.m4a"
+          type="audio/mp4">
+      </audio>
+
+      <div class="cell">
+        <audio class="over">
+          <source
+            src="assets/audio/fx/CCBY3-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS9icm91bWJyb3VtL3NvdW5kcy81MDU2MC8=.m4a"
+            type="audio/mp4">
+        </audio>
+        <audio class="click">
+          <source src="assets/audio/fx/CC0-aHR0cHM6Ly9mcmVlc291bmQub3JnL3Blb3BsZS9CaWdfRDEyMy9zb3VuZHMvNzMyMTM=.m4a"
+            type="audio/mp4">
+        </audio>
+      </div>
+    </div>
+
+    <img src="assets/img/ui/sombra.png" alt="ui_sombra" />
+  </div>
+
+  <div class="loading exibir">
+    <div class="bola1"></div>
+    <div class="bola2"></div>
+  </div>
+
+  <header class="principal ocultar">
+    <div>
+      <img class="consolelog" src="assets/img/ico/list-alt.svg" alt="Console LOG" />
+      <a href="https://github.com/JeanCarloEM/GaMem" target="_blank"><img src="assets/img/ico/github.svg"
+          alt="github" /></a>
+    </div>
+
+    <a class="logo" href="//www.jeancarloem.com" target="_blank"><img
+        src="https://static.jcem.pro/assets/icon/pro/header/logo-animado2.gif" alt="JeanCarloEM.com" /></a>
+  </header>
+
+  <div class="loadbar"></div>
+
+  <div class="noratio ocultar">
+    <table>
+      <tr>
+        <td>
+          Resolução não suportada.<br />&lt; 360px
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <section class="game ocultar">
+    <div class="gameFundo"></div>
+
+    <div class="quadro">
+      <div class='tabuleiro ocultar'></div>
+
+      <div class="gameover ocultar">
+        <table>
+          <tr>
+            <td>
+              <div>
+                <img src="assets/img/ui/gover.png" alt="Game Over" /><br />
+                <div class='btb gomenu'>Menu</div><br />
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="wins ocultar">
+        <table>
+          <tr>
+            <td>
+              <div class="pontos">
+                <img class='p1' src="assets/img/ui/p1.svg" alt="P1" />
+                <img class='p2' src="assets/img/ui/p2.svg" alt="P2" />
+
+                <div class="margin contador">
+                  <div class="num d3"><img src="assets/img/nums/0.svg" alt="D" /></div>
+                  <div class="num d2"><img src="assets/img/nums/0.svg" alt="D" /></div>
+                  <div class="num d1"><img src="assets/img/nums/0.svg" alt="D" /></div>
+                </div>
+
+                <div class='btb gomenu'>Menu</div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="splash exibir">
+        <table>
+          <tr>
+            <td>
+              <img class='logo' src="assets/img/ui/logo.png" alt="GaMem" />
+              <div class='menu'>
+                <div class='btb continuar'>Continuar...</div>
+                <div class='btb v2 mp'></div><br />
+                <div class='btb n' data-q='4'>Fácil</div>
+                <div class='btb d' data-q='6'>Dificil</div>
+                <div class='btb md' data-q='8'>Muito Difícil</div>
+                <div class='btb md' data-q='10'>Insano</div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class='hud ocultar'>
+      <div class="bot">
+        <div class="margin">
+          <img src="assets/img/ico/menu.svg" alt="menu" class="ico menu" />
+        </div>
+      </div>
+      <div class="top">
+        <div class="margin contador">
+          <div class="num d3"><img src="assets/img/nums/0.svg" alt="D" /></div>
+          <div class="num d2"><img src="assets/img/nums/0.svg" alt="D" /></div>
+          <div class="num d1"><img src="assets/img/nums/0.svg" alt="D" /></div>
+        </div>
+      </div>
+
+      <div class="topm">
+        <div class="margin">
+          <div class="p1 pontos">
+            <div class="contador">
+              <div class="num d3"><img src="assets/img/nums/0.svg" alt="D" /></div>
+              <div class="num d2"><img src="assets/img/nums/0.svg" alt="D" /></div>
+              <div class="num d1"><img src="assets/img/nums/0.svg" alt="D" /></div>
+            </div>
+          </div>
+          <div class="p2 pontos">
+            <div class="contador">
+              <div class="num d3"><img src="assets/img/nums/0.svg" alt="D" /></div>
+              <div class="num d2"><img src="assets/img/nums/0.svg" alt="D" /></div>
+              <div class="num d1"><img src="assets/img/nums/0.svg" alt="D" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="botm">
+        <div class="margin">
+          <div class="p1">
+            <div><img src="assets/img/ico/p1.svg" alt="P1" /></div>
+          </div>
+          <div class="p2">
+            <div><img src="assets/img/ico/p2.svg" alt="P2" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="right volume music">
+      <table>
+        <tr>
+          <td>
+            <img src="assets/img/ico/music.svg" />
+            <div data-vol="9"></div>
+            <div data-vol="8"></div>
+            <div data-vol="7"></div>
+            <div data-vol="6"></div>
+            <div data-vol="5"></div>
+            <div data-vol="4"></div>
+            <div data-vol="3"></div>
+            <div data-vol="2"></div>
+            <div data-vol="1"></div>
+            <div data-vol="0"></div>
+          </td>
+        </tr>
+      </table>
+    </aside>
+
+    <aside class="left volume fx">
+      <table>
+        <tr>
+          <td>
+            <img src="assets/img/ico/volume-up.svg" />
+            <div data-vol="9"></div>
+            <div data-vol="8"></div>
+            <div data-vol="7"></div>
+            <div data-vol="6"></div>
+            <div data-vol="5"></div>
+            <div data-vol="4"></div>
+            <div data-vol="3"></div>
+            <div data-vol="2"></div>
+            <div data-vol="1"></div>
+            <div data-vol="0"></div>
+          </td>
+        </tr>
+      </table>
+    </aside>
+  </section>
+</body>
+
+</html>

@@ -1,5 +1,4 @@
 /nbproject
-/outros
 *.pdf
 *.psd
 *.ai
@@ -7,4 +6,4 @@
 .7z
 .zip
 .rar
-/www/lib
+*.map
